@@ -15,7 +15,7 @@ STEPS TO REMEMEMBER
 1. Clone the Repo for YOLOv4 Pytorch Envi
 2. Install requirements 
 3. Download and get ready the pre-trained weights.
-4. Create custom.yaml | OPEN configs> *edit yolov3-custom.yaml* > *classes* > *this is the layers of the v4*
+4. Use the COCO-Detection yolov4.yaml
 5. Create custom data | OPEN data> custom.yaml > edit file, the directories of the train and val.
     train: ../alldata/images/train/  
     val: ../alldata/images/val/ 
