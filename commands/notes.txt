@@ -23,3 +23,25 @@ STEPS TO REMEMEMBER
 using script.
 -> OPEN scripts> create_data_list.py> *edit path* > do it 2x, for train and val
 7. Train. | python train.py --config-file configs/COCO-Detection/yolov4.yaml --data data/custom.yaml --weights yolov4.conv.137.pth
+
+--------------------------------------------------------
+NORMAL TRAINING 
+Training with transfer learning – Configuration and hyperparameter settings
+1. Clone alexyab repo
+2. Change Makefile to enable GPU
+3. Download pretrained model yolov4.conv.137
+4. Create obj.data
+	classes = 29
+	train = build/darknet/x64/data/train.txt
+	valid = build/data/darknet/valid.txt
+	names = build/darknet/x64/data/obj.names
+	backup = build/darknet/x64/backup
+5. Create configuration file for training the model on our images. Alter few hyperparameters.
+	-max_batches = 58000
+	-46400, 52200
+	-number of classes = 29
+	-filters(#classes+5)x3 = 102; has to be the last convolutional before
+		each of the yolo layers
+6. Create obj.names - object classes per row
+COMMAND:
+!./darknet detector train build/darknet/x64/data/obj.data cfg/yolov4_train.cfg build/darknet/x64/yolov4.conv.137 -dont_show
