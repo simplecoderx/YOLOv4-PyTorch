@@ -302,7 +302,7 @@ def train():
     # Finish
     print(f"{epoch - start_epoch} epochs completed in {(time.time() - start_time) / 3600:.3f} hours.\n")
 
-    torch.distributed.destroy_process_group()
+    #torch.distributed.destroy_process_group()
     torch.cuda.empty_cache()
     return results
 
