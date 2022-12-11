@@ -32,12 +32,21 @@ from test import evaluate
 from yolov4_pytorch.data import check_anchors
 from yolov4_pytorch.data import check_image_size
 from yolov4_pytorch.data import create_dataloader
+from utils.general import (LOGGER, NCOLS, check_dataset, check_file, check_git_status, check_img_size,
+                           check_requirements, check_suffix, check_yaml, colorstr, get_latest_run, increment_path,
+                           init_seeds, intersect_dicts, labels_to_class_weights, labels_to_image_weights, methods,
+                           one_cycle, print_args, print_mutation, strip_optimizer)
+from utils.loggers import Loggers
 from yolov4_pytorch.model import YOLO
 from yolov4_pytorch.solver import ModelEMA
 from yolov4_pytorch.utils import compute_loss
 from yolov4_pytorch.utils import fitness
 from yolov4_pytorch.utils import init_seeds
 from yolov4_pytorch.utils import select_device
+
+LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable/elastic/run.html
+RANK = int(os.getenv('RANK', -1))
+WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
 # Hyper parameters
 hyper_parameters = {"lr0": 0.01,  # initial learning rate
@@ -59,7 +68,6 @@ hyper_parameters = {"lr0": 0.01,  # initial learning rate
                     "scale": 0.5,  # image scale (+/- gain)
                     "shear": 0.0}  # image shear (+/- deg)
 
-
 def train():
     print(f"Hyper parameters {hyper_parameters}")
     epochs = args.epochs
@@ -80,6 +88,14 @@ def train():
 
     # Create model
     model = YOLO(config_file=config_file, number_classes=number_classes).to(device)
+
+    # Freeze
+    freeze = [f'model.{x}.' for x in range(freeze)]  # layers to freeze
+    for k, v in model.named_parameters():
+        v.requires_grad = True  # train all layers
+        if any(x in k for x in freeze):
+            LOGGER.info(f'freezing {k}')
+            v.requires_grad = False
 
     # Optimizer
     accumulate = max(round(64 / batch_size), 1)  # accumulate loss before optimizing
@@ -314,6 +330,7 @@ if __name__ == "__main__":
     parser.add_argument("--weights", type=str, default="",
                         help="Initial weights path. (default: ``)")
     parser.add_argument('--pretrained', type=str, default=None, help='pretrained yolov4.conv.137')
+    parser.add_argument('--freeze', type=int, default=0, help='Number of layers to freeze. backbone=10, all=24')
     parser.add_argument("--device", default="",
                         help="device id i.e. `0` or `0,1` or `cpu`. (default: ``).")
     args = parser.parse_args()
