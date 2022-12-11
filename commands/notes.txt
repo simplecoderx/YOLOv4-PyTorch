@@ -1,0 +1,25 @@
+#NOTE: ANG SULOD NI TRAIN.TXT AND VAL.TXT
+#IS THE LOCATION SA E-TRAIN NGA MGA PICTURES 
+#AND ANG KAY VAL IS KATUNG E-VALIDATE NA MGA PICS
+
+#sulod ni val.txt original
+data/custom/images/train.jpg
+
+#sulod ni train.txt original
+data/custom/images/train.jpg
+
+#sulod ni test.txt original
+data/custom/images/train.jpg
+
+STEPS TO REMEMEMBER 
+1. Clone the Repo for YOLOv4 Pytorch Envi
+2. Install requirements 
+3. Download and get ready the pre-trained weights.
+4. Create custom.yaml | OPEN configs> *edit yolov3-custom.yaml* > *classes* > *this is the layers of the v4*
+5. Create custom data | OPEN data> custom.yaml > edit file, the directories of the train and val.
+    train: ../alldata/images/train/  
+    val: ../alldata/images/val/ 
+6. Create train.txt and val.txt that corresponds to the directory of to be trained images and to be validated images
+using script.
+-> OPEN scripts> create_data_list.py> *edit path* > do it 2x, for train and val
+7. Train. | python train.py --config-file configs/COCO-Detection/yolov4.yaml --data data/custom.yaml --weights yolov4.conv.137.pth

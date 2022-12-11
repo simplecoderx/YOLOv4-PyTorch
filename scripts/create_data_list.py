@@ -13,10 +13,10 @@
 # ==============================================================================
 import os
 
-f = open('../data/coco2017/ImageSets/Main/val.txt', 'w')
-for filename in os.listdir("../data/coco2017/val_annotations"):
-    print(f"Process: {os.path.join('../data/coco2017/val_annotations', filename)}")
-    out_path = "../data/coco2017/val_annotations" + filename.replace('xml', 'jpg')
-    out_path = out_path.replace('../data/coco2017/val_annotations', '../data/coco2017/JPEGImages/val2017')
+f = open('../data/custom/val.txt', 'w')
+for filename in os.listdir("E:/alldata/images/val"):
+    print(f"Process: {os.path.join('../alldata/images/val/', filename)}")
+    out_path = "../alldata/images/val/" + filename.replace('xml', 'jpg')
+    out_path = out_path.replace('../alldata/images/val/', '../alldata/images/val/')
     f.write(out_path + '\n')
 f.close()

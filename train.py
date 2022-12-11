@@ -313,6 +313,7 @@ if __name__ == "__main__":
                         help="cache images for faster training.")
     parser.add_argument("--weights", type=str, default="",
                         help="Initial weights path. (default: ``)")
+    parser.add_argument('--pretrained', type=str, default=None, help='pretrained yolov4.conv.137')
     parser.add_argument("--device", default="",
                         help="device id i.e. `0` or `0,1` or `cpu`. (default: ``).")
     args = parser.parse_args()
